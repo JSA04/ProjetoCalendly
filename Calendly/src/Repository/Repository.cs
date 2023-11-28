@@ -16,6 +16,5 @@ public class Repository : IRepository {
         var filter = Builders<Event>.Filter.Empty;
         return _infrastructure.Find(filter).ToList();
     }
-
   
 }
