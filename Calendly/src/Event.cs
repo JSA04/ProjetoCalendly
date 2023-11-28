@@ -1,16 +1,30 @@
+using MongoDB.Bson;
+
 namespace Calendly;
 
 public class Event {
-    private string Name {get ; set;}
-    private int Duration {get ; set;}
-    private string Location {get ; set;}
-    private string Description {get ; set;}
+    public ObjectId Id {get ; set;}
+    public string EventName {get ; set;}
+    public int EventDuration {get ; set;}
+    public string EventLocation {get ; set;}
+    public string EventDescription {get ; set;}
     
-    public Event (string name, int duration, string location, string description)
+    public Event (ObjectId id, string name, int duration, string location, string description)
     {
-        Name = name;
-        Duration = duration;
-        Location = location;
-        Description = description;
-    } 
+        Id = id;
+        EventName = name;
+        EventDuration = duration;
+        EventLocation = location;
+        EventDescription = description;
+    }
+
+
+    public override string ToString() =>
+        $"{{\n" +
+        $"\t\"event_id\": \"{Id.ToString()}\"\n" +
+        $"\t\"event_name\": \"{EventName}\"\n" +
+        $"\t\"event_duration\": {EventDuration}\n" +
+        $"\t\"event_location\": \"{EventLocation}\"\n" +
+        $"\t\"event_description\": \"{EventDescription}\"" +
+        $"\n}}";
 }

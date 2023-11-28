@@ -1,15 +1,24 @@
+using System.Text;
 using MongoDB.Driver;
-using MongoDB.Driver.Linq;
 
 namespace Calendly.Repository;
 
-public class Repository {
-    private readonly IMongoCollection<string> _infrastructure;
+public class Repository : IRepository {
+    private readonly IMongoCollection<Event> _infrastructure;
     
-    public Repository () => _infrastructure = Infrastructure.Infrastructure.GetInfrastructure();
-
-    public IMongoQueryable ListEvents ()
+    public Repository ()
     {
-        return _infrastructure.AsQueryable();
+        _infrastructure = Infrastructure.Infrastructure.GetInfrastructure();
+    }
+
+    public List<Event> ListEvents ()
+    {
+        var filter = Builders<Event>.Filter.Empty;
+        return _infrastructure.Find(filter).ToList();
+    }
+
+    public void AddEvent()
+    {
+
     }
 }

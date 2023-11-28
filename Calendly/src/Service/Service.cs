@@ -1,13 +1,22 @@
+using System.Text;
+using MongoDB.Bson;
+
 namespace Calendly.Service;
 
-public class Service
+public class Service : IService
 {
-    private readonly Calendly.Repository.Repository _repository; 
+    private readonly Repository.IRepository _repository;
+
+    public Service () => _repository = new Repository.Repository ();
     
-    public Service () => _repository = new ();
-    
-    public string? ListEvents () 
+    public string ListEvents ()
     {
-        return _repository.ListEvents().ToString();
+        List<Event> events = _repository.ListEvents();
+        return events.ToJson();
+    }
+
+    public string AddEvent(string eventName, int eventDuration, string eventLocation, string eventDescription)
+    {
+        Event newEvent = new Event();
     }
 }

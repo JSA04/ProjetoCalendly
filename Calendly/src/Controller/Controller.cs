@@ -5,9 +5,7 @@ namespace Calendly.Controller;
 [Route("/[controller]")]
 public class Controller : ControllerBase
 {
+    private readonly Service.IService _service = new Service.Service ();
 
-    
-    private readonly Calendly.Service.Service _service = new();
-    [HttpGet]
-    public string? ListEvents() => _service.ListEvents();
+    [HttpGet("/ListEvents")] public string ListEvents() => _service.ListEvents();
 }
