@@ -1,5 +1,5 @@
-using Calendly.Repository;
-using Calendly.Service;
+using Calendly.Api.Repository;
+using Calendly.Api.Service;
 
 var builder = WebApplication.CreateBuilder(args);
 
