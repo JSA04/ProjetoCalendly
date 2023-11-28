@@ -9,9 +9,8 @@ public class Event {
     public string EventLocation {get ; set;}
     public string EventDescription {get ; set;}
     
-    public Event (ObjectId id, string name, int duration, string location, string description)
+    public Event (string name, int duration, string location, string description)
     {
-        Id = id;
         EventName = name;
         EventDuration = duration;
         EventLocation = location;

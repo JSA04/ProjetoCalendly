@@ -15,8 +15,5 @@ public class Service : IService
         return events.ToJson();
     }
 
-    public string AddEvent(string eventName, int eventDuration, string eventLocation, string eventDescription)
-    {
-        Event newEvent = new Event();
-    }
+    
 }

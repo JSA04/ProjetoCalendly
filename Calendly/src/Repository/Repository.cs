@@ -17,8 +17,5 @@ public class Repository : IRepository {
         return _infrastructure.Find(filter).ToList();
     }
 
-    public void AddEvent()
-    {
-
-    }
+  
 }
