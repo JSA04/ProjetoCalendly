@@ -1,5 +1,7 @@
+using Calendly.Api.Models;
 using MongoDB.Driver;
-namespace Calendly.Infrastructure;
+
+namespace Calendly.Api.Infrastructure;
 
 public sealed class Infrastructure {
     

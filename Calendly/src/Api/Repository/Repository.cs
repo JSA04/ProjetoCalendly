@@ -1,7 +1,7 @@
-using System.Text;
+using Calendly.Api.Models;
 using MongoDB.Driver;
 
-namespace Calendly.Repository;
+namespace Calendly.Api.Repository;
 
 public class Repository : IRepository {
     private readonly IMongoCollection<Event> _infrastructure;
@@ -17,8 +17,19 @@ public class Repository : IRepository {
         return _infrastructure.Find(filter).ToList();
     }
 
-    public void AddEvent()
+    public bool AddEvent(Event e)
     {
+        try
+        {
+            _infrastructure.InsertOne(e);
+        }
+        catch (Exception exception)
+        {
+            Console.WriteLine(exception);
+            return false;
+        }
+
+        return true;
 
     }
 }

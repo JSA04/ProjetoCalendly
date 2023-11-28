@@ -1,6 +1,6 @@
 using MongoDB.Bson;
 
-namespace Calendly;
+namespace Calendly.Api.Models;
 
 public class Event {
     public ObjectId Id {get ; set;}
@@ -9,9 +9,9 @@ public class Event {
     public string EventLocation {get ; set;}
     public string EventDescription {get ; set;}
     
-    public Event (ObjectId id, string name, int duration, string location, string description)
+    public Event (string name, int duration, string location, string description)
     {
-        Id = id;
+        Id = ObjectId.GenerateNewId();
         EventName = name;
         EventDuration = duration;
         EventLocation = location;
