@@ -30,6 +30,36 @@ public class Repository : IRepository {
         }
 
         return true;
+    }
+
+    public bool UpdateEvent(string uid, Event e)
+    {
+        try
+        {
+            var filter = Builders<Event>.Filter.Eq(ev => ev.UId, uid);
+            var update = Builders<Event>.Update;
+
+            if (e.EventName.Trim() != String.Empty)
+                _infrastructure.UpdateOne(filter, update.Set(oldEvent => oldEvent.EventName, e.EventName));
+
+            if (e.EventDuration <= 0)
+                _infrastructure.UpdateOne(filter, update.Set(oldEvent => oldEvent.EventDuration, e.EventDuration));
+
+            if (e.EventLocation.Trim() != String.Empty)
+                _infrastructure.UpdateOne(filter, update.Set(oldEvent => oldEvent.EventLocation, e.EventLocation));
+
+            if (e.EventDescription.Trim() != String.Empty)
+                _infrastructure.UpdateOne(filter, update.Set(oldEvent => oldEvent.EventDescription, e.EventDescription));
+
+        }
+        catch (Exception exception)
+        {
+            Console.WriteLine(exception);
+            return false;
+        }
+
+        return true;
+
 
     }
 }
