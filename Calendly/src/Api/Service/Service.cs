@@ -23,4 +23,12 @@ public class Service : IService
         
         return result?"Criado com Sucesso":"Falha na Criação";
     }
+
+    public string UpdateEvent(string uid, string eventName, int eventDuration, string eventLocation, string eventDescription)
+    {
+        Event updatedEvent = new Event(eventName, eventDuration, eventLocation, eventDescription);
+        bool result = _repository.UpdateEvent(uid, updatedEvent);
+
+        return result?"Atualizado com Sucesso":"Falha na Atualizacao";
+    }
 }
