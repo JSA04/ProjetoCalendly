@@ -1,27 +1,29 @@
-using Calendly.Api.Models;
+using Calendly.Api.Domain.DAOs;
+using Calendly.Api.Domain.DTOs;
 using MongoDB.Driver;
 
 namespace Calendly.Api.Repository;
 
 public class Repository : IRepository {
-    private readonly IMongoCollection<Event> _infrastructure;
+    private readonly IMongoCollection<EventDAO> _infrastructure;
     
     public Repository ()
     {
         _infrastructure = Infrastructure.Infrastructure.GetInfrastructure();
     }
 
-    public List<Event> ListEvents ()
+    public List<EventDAO> ListEvents ()
     {
-        var filter = Builders<Event>.Filter.Empty;
+        var filter = Builders<EventDAO>.Filter.Empty;
         return _infrastructure.Find(filter).ToList();
     }
 
-    public bool AddEvent(Event e)
+    public bool AddEvent(EventDTO e)
     {
         try
         {
-            _infrastructure.InsertOne(e);
+            EventDAO eDao = new EventDAO(e);
+            _infrastructure.InsertOne(eDao);
         }
         catch (Exception exception)
         {
@@ -32,12 +34,12 @@ public class Repository : IRepository {
         return true;
     }
 
-    public bool UpdateEvent(string uid, Event e)
+    public bool UpdateEvent(string uid, EventDTO e)
     {
         try
         {
-            var filter = Builders<Event>.Filter.Eq(ev => ev.UId, uid);
-            var update = Builders<Event>.Update;
+            var filter = Builders<EventDAO>.Filter.Eq(ev => ev.UId, uid);
+            var update = Builders<EventDAO>.Update;
 
             if (e.EventName.Trim() != String.Empty)
                 _infrastructure.UpdateOne(filter, update.Set(oldEvent => oldEvent.EventName, e.EventName));

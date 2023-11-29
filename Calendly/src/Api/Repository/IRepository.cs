@@ -1,9 +1,10 @@
-using Calendly.Api.Models;
+using Calendly.Api.Domain.DAOs;
+using Calendly.Api.Domain.DTOs;
 
 namespace Calendly.Api.Repository;
 
 public interface IRepository {
-    public List<Event> ListEvents();
-    public bool AddEvent(Event e);
-    public bool UpdateEvent(string uid, Event e);
+    public List<EventDAO> ListEvents();
+    public bool AddEvent(EventDTO e);
+    public bool UpdateEvent(string uid, EventDTO e);
 }
