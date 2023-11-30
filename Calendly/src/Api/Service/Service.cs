@@ -32,10 +32,9 @@ public class Service : IService
         return result?"Criado com Sucesso":"Falha na Criação";
     }
 
-    public string UpdateEvent(string uid, string eventName, int eventDuration, string eventLocation, string eventDescription)
+    public string UpdateEvent(string uid, EventDTO updatedEventDto)
     {
-        EventDTO updatedEvent = new EventDTO(eventName, eventDuration, eventLocation, eventDescription);
-        bool result = _repository.UpdateEvent(uid, updatedEvent);
+        bool result = _repository.UpdateEvent(uid, updatedEventDto);
 
         return result?"Atualizado com Sucesso":"Falha na Atualizacao";
     }
