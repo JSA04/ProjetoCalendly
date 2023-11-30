@@ -11,7 +11,7 @@ public class Service : IService
 
     public Service () => _repository = new Repository.Repository();
     
-    public string ListEvents ()
+    public List<EventDTO> ListEvents ()
     {
         List<EventDAO> eventsDaos = _repository.ListEvents();
         List<EventDTO> events = new ();
@@ -21,7 +21,7 @@ public class Service : IService
             events.Add(new EventDTO(eventDao));
         }
 
-        return events.ToJson();
+        return events;
     }
 
     public string AddEvent(string eventName, int eventDuration, string eventLocation, string eventDescription)
