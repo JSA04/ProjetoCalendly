@@ -18,6 +18,14 @@ public class Repository : IRepository {
         return _infrastructure.Find(filter).ToList();
     }
 
+    public EventDAO FindEventById(string uid)
+    {
+
+        var filter = Builders<EventDAO>.Filter.Eq(ev => ev.UId, uid);
+        return _infrastructure.Find(filter).First();
+
+    }
+
     public bool AddEvent(EventDTO e)
     {
         try
@@ -34,24 +42,24 @@ public class Repository : IRepository {
         return true;
     }
 
-    public bool UpdateEvent(string uid, EventDTO e)
+    public bool UpdateEvent(string uid, EventDTO newEventDto)
     {
         try
         {
             var filter = Builders<EventDAO>.Filter.Eq(ev => ev.UId, uid);
             var update = Builders<EventDAO>.Update;
 
-            if (e.EventName.Trim() != String.Empty)
-                _infrastructure.UpdateOne(filter, update.Set(oldEvent => oldEvent.EventName, e.EventName));
+            if (newEventDto.EventName.Trim() != String.Empty)
+                _infrastructure.UpdateOne(filter, update.Set(oldEvent => oldEvent.EventName, newEventDto.EventName));
 
-            if (e.EventDuration <= 0)
-                _infrastructure.UpdateOne(filter, update.Set(oldEvent => oldEvent.EventDuration, e.EventDuration));
+            if (newEventDto.EventDuration > 0)
+                _infrastructure.UpdateOne(filter, update.Set(oldEvent => oldEvent.EventDuration, newEventDto.EventDuration));
 
-            if (e.EventLocation.Trim() != String.Empty)
-                _infrastructure.UpdateOne(filter, update.Set(oldEvent => oldEvent.EventLocation, e.EventLocation));
+            if (newEventDto.EventLocation.Trim() != String.Empty)
+                _infrastructure.UpdateOne(filter, update.Set(oldEvent => oldEvent.EventLocation, newEventDto.EventLocation));
 
-            if (e.EventDescription.Trim() != String.Empty)
-                _infrastructure.UpdateOne(filter, update.Set(oldEvent => oldEvent.EventDescription, e.EventDescription));
+            if (newEventDto.EventDescription.Trim() != String.Empty)
+                _infrastructure.UpdateOne(filter, update.Set(oldEvent => oldEvent.EventDescription, newEventDto.EventDescription));
 
         }
         catch (Exception exception)
