@@ -1,13 +1,13 @@
-using Calendly.Api.Models;
+using Calendly.Api.Domain.DAOs;
 using MongoDB.Driver;
 
 namespace Calendly.Api.Infrastructure;
 
 public sealed class Infrastructure {
     
-    private static IMongoCollection<Event>? _infrastructure;
+    private static IMongoCollection<EventDAO>? _infrastructure;
     
-    public static IMongoCollection<Event> GetInfrastructure ()
+    public static IMongoCollection<EventDAO> GetInfrastructure ()
     {
         if (_infrastructure is null)
         {
@@ -18,7 +18,7 @@ public sealed class Infrastructure {
 
             IMongoClient client = new MongoClient(mongoUri);
             IMongoDatabase db = client.GetDatabase(mongoDb);
-            _infrastructure = db.GetCollection<Event>(name: mongoCollection);
+            _infrastructure = db.GetCollection<EventDAO>(name: mongoCollection);
         }
         
         return _infrastructure;

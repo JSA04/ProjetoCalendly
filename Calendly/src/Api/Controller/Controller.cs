@@ -1,3 +1,4 @@
+using Calendly.Api.Domain.DTOs;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Calendly.Api.Controller;
@@ -9,7 +10,7 @@ public class Controller : ControllerBase
     private readonly Service.IService _service = new Service.Service ();
 
     [HttpGet("/ListEvents")]
-    public string ListEvents() => _service.ListEvents();
+    public List<EventDTO> ListEvents() => _service.ListEvents();
 
     [HttpPost("/AddEvent")]
     public string AddEvent(string eventName, int eventDuration, string eventLocation, string eventDescription)
