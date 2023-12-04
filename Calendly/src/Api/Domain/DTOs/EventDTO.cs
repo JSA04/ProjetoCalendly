@@ -1,18 +1,16 @@
 using System.Text.Json.Serialization;
 using Calendly.Api.Domain.DAOs;
+using MongoDB.Bson;
 
 namespace Calendly.Api.Domain.DTOs;
 
 public class EventDTO {
-    
+    [JsonIgnore]
+    public ObjectId Id {get ; set;}
     public string UId {get ; set;}
-    
     public string EventName {get ; set;}
-    
     public int EventDuration {get ; set;}
-    
     public string EventLocation {get ; set;}
-    
     public string EventDescription {get ; set;}
     [JsonIgnore]
     public DateTime EventLastUpdateTime {get ; set;}
@@ -33,6 +31,7 @@ public class EventDTO {
     
     public EventDTO (EventDAO eventDao)
     {
+        Id = eventDao.Id;
         UId = eventDao.UId;
         EventName = eventDao.EventName;
         EventDuration = eventDao.EventDuration;
