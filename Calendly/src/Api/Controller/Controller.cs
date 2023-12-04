@@ -20,6 +20,6 @@ public class Controller : ControllerBase
         => _service.AddEvent(eventName, eventDuration, eventLocation, eventDescription);
 
     [HttpPut("/UpdateEvent")]
-    public string UpdateEvent(string eventUId, string eventName, int eventDuration, string eventLocation, string eventDescription)
-        => _service.UpdateEvent(eventUId, eventName, eventDuration, eventLocation, eventDescription);
+    public string UpdateEvent(string uIdEvent, [FromBody] EventDTOPut newEventDto)
+        => _service.UpdateEvent(uIdEvent, newEventDto);
 }

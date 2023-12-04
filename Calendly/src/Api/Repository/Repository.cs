@@ -42,34 +42,21 @@ public class Repository : IRepository {
         return true;
     }
 
-    public bool UpdateEvent(string uid, EventDTO newEventDto)
+    public bool UpdateEvent(string oldEventId, EventDTO newEventDto)
     {
         try
         {
-            var filter = Builders<EventDAO>.Filter.Eq(ev => ev.UId, uid);
-            var update = Builders<EventDAO>.Update;
+            EventDAO newEventDao = new EventDAO(newEventDto);
 
-            if (newEventDto.EventName.Trim() != String.Empty)
-                _infrastructure.UpdateOne(filter, update.Set(oldEvent => oldEvent.EventName, newEventDto.EventName));
-
-            if (newEventDto.EventDuration > 0)
-                _infrastructure.UpdateOne(filter, update.Set(oldEvent => oldEvent.EventDuration, newEventDto.EventDuration));
-
-            if (newEventDto.EventLocation.Trim() != String.Empty)
-                _infrastructure.UpdateOne(filter, update.Set(oldEvent => oldEvent.EventLocation, newEventDto.EventLocation));
-
-            if (newEventDto.EventDescription.Trim() != String.Empty)
-                _infrastructure.UpdateOne(filter, update.Set(oldEvent => oldEvent.EventDescription, newEventDto.EventDescription));
-
+            var filter = Builders<EventDAO>.Filter.Eq(ev => ev.UId, oldEventId);
+            _infrastructure.ReplaceOne(filter, newEventDao);
         }
         catch (Exception exception)
         {
-            Console.WriteLine(exception);
+            Console.WriteLine(exception.Message);
             return false;
         }
 
         return true;
-
-
     }
 }

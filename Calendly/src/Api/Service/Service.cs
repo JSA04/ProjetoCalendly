@@ -25,7 +25,9 @@ public class Service : IService
 
     public EventDTO FindEventById(string uid)
     {
-        return new EventDTO(_repository.FindEventById(uid));
+        EventDTO eventDto = new EventDTO(_repository.FindEventById(uid));
+
+        return eventDto;
     }
 
     public string AddEvent(string eventName, int eventDuration, string eventLocation, string eventDescription)
@@ -36,9 +38,30 @@ public class Service : IService
         return result?"Criado com Sucesso":"Falha na Criação";
     }
 
-    public string UpdateEvent(string eventUId, string eventName, int eventDuration, string eventLocation, string eventDescription)
+    public string UpdateEvent(string eventUId, EventDTOPut newEventDto)
     {
-        bool result = _repository.UpdateEvent(eventUId, new EventDTO(eventName, eventDuration, eventLocation, eventDescription));
+        EventDTO eventToUpdateDto = FindEventById(eventUId);
+
+        // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
+        if (eventToUpdateDto is null)
+        {
+            return "Evento não encontrado";
+        }
+
+        foreach (var property in newEventDto.GetType().GetProperties())
+        {
+            var propertyValue = property.GetValue(newEventDto);
+
+            if (property.Name == "EventLastUpdateTime")
+            {
+                eventToUpdateDto.GetType().GetProperty(property.Name)!.SetValue(eventToUpdateDto, DateTime.Now);
+            } else if (propertyValue != null)
+            {
+                eventToUpdateDto.GetType().GetProperty(property.Name)!.SetValue(eventToUpdateDto, propertyValue);
+            }
+        }
+
+        bool result = _repository.UpdateEvent(eventUId, eventToUpdateDto);
 
         return result?"Atualizado com Sucesso":"Falha na Atualizacao";
     }
