@@ -5,6 +5,7 @@ namespace Calendly.Api.Repository;
 
 public interface IRepository {
     public List<EventDAO> ListEvents();
+    public EventDAO FindEventById(string uid);
     public bool AddEvent(EventDTO e);
-    public bool UpdateEvent(string uid, EventDTO e);
+    public bool UpdateEvent(string oldEventUId, EventDTO newEventDto);
 }

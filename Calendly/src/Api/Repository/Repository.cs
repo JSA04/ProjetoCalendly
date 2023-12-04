@@ -18,6 +18,14 @@ public class Repository : IRepository {
         return _infrastructure.Find(filter).ToList();
     }
 
+    public EventDAO FindEventById(string uid)
+    {
+
+        var filter = Builders<EventDAO>.Filter.Eq(ev => ev.UId, uid);
+        return _infrastructure.Find(filter).First();
+
+    }
+
     public bool AddEvent(EventDTO e)
     {
         try
@@ -34,34 +42,21 @@ public class Repository : IRepository {
         return true;
     }
 
-    public bool UpdateEvent(string uid, EventDTO e)
+    public bool UpdateEvent(string oldEventId, EventDTO newEventDto)
     {
         try
         {
-            var filter = Builders<EventDAO>.Filter.Eq(ev => ev.UId, uid);
-            var update = Builders<EventDAO>.Update;
+            EventDAO newEventDao = new EventDAO(newEventDto);
 
-            if (e.EventName.Trim() != String.Empty)
-                _infrastructure.UpdateOne(filter, update.Set(oldEvent => oldEvent.EventName, e.EventName));
-
-            if (e.EventDuration <= 0)
-                _infrastructure.UpdateOne(filter, update.Set(oldEvent => oldEvent.EventDuration, e.EventDuration));
-
-            if (e.EventLocation.Trim() != String.Empty)
-                _infrastructure.UpdateOne(filter, update.Set(oldEvent => oldEvent.EventLocation, e.EventLocation));
-
-            if (e.EventDescription.Trim() != String.Empty)
-                _infrastructure.UpdateOne(filter, update.Set(oldEvent => oldEvent.EventDescription, e.EventDescription));
-
+            var filter = Builders<EventDAO>.Filter.Eq(ev => ev.UId, oldEventId);
+            _infrastructure.ReplaceOne(filter, newEventDao);
         }
         catch (Exception exception)
         {
-            Console.WriteLine(exception);
+            Console.WriteLine(exception.Message);
             return false;
         }
 
         return true;
-
-
     }
 }

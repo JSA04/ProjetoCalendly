@@ -1,7 +1,6 @@
 using Calendly.Api.Domain.DAOs;
 using Calendly.Api.Domain.DTOs;
 using Calendly.Api.Repository;
-using MongoDB.Bson;
 
 namespace Calendly.Api.Service;
 
@@ -24,6 +23,13 @@ public class Service : IService
         return events;
     }
 
+    public EventDTO FindEventById(string uid)
+    {
+        EventDTO eventDto = new EventDTO(_repository.FindEventById(uid));
+
+        return eventDto;
+    }
+
     public string AddEvent(string eventName, int eventDuration, string eventLocation, string eventDescription)
     {
         EventDTO newEvent = new EventDTO(eventName, eventDuration, eventLocation, eventDescription);
@@ -32,10 +38,30 @@ public class Service : IService
         return result?"Criado com Sucesso":"Falha na Criação";
     }
 
-    public string UpdateEvent(string uid, string eventName, int eventDuration, string eventLocation, string eventDescription)
+    public string UpdateEvent(string eventUId, EventDTOPut newEventDto)
     {
-        EventDTO updatedEvent = new EventDTO(eventName, eventDuration, eventLocation, eventDescription);
-        bool result = _repository.UpdateEvent(uid, updatedEvent);
+        EventDTO eventToUpdateDto = FindEventById(eventUId);
+
+        // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
+        if (eventToUpdateDto is null)
+        {
+            return "Evento não encontrado";
+        }
+
+        foreach (var property in newEventDto.GetType().GetProperties())
+        {
+            var propertyValue = property.GetValue(newEventDto);
+
+            if (property.Name == "EventLastUpdateTime")
+            {
+                eventToUpdateDto.GetType().GetProperty(property.Name)!.SetValue(eventToUpdateDto, DateTime.Now);
+            } else if (propertyValue != null)
+            {
+                eventToUpdateDto.GetType().GetProperty(property.Name)!.SetValue(eventToUpdateDto, propertyValue);
+            }
+        }
+
+        bool result = _repository.UpdateEvent(eventUId, eventToUpdateDto);
 
         return result?"Atualizado com Sucesso":"Falha na Atualizacao";
     }

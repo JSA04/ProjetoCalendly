@@ -12,11 +12,14 @@ public class Controller : ControllerBase
     [HttpGet("/ListEvents")]
     public List<EventDTO> ListEvents() => _service.ListEvents();
 
+    [HttpGet("/FindEventById")]
+    public EventDTO FindEventById(string uid) => _service.FindEventById(uid);
+
     [HttpPost("/AddEvent")]
     public string AddEvent(string eventName, int eventDuration, string eventLocation, string eventDescription)
         => _service.AddEvent(eventName, eventDuration, eventLocation, eventDescription);
 
     [HttpPut("/UpdateEvent")]
-    public string UpdateEvent(string eventUId, string eventName = "", int eventDuration = 0, string eventLocation = "", string eventDescription = "")
-        => _service.UpdateEvent(eventUId, eventName, eventDuration, eventLocation, eventDescription);
+    public string UpdateEvent(string uIdEvent, [FromBody] EventDTOPut newEventDto)
+        => _service.UpdateEvent(uIdEvent, newEventDto);
 }
