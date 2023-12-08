@@ -8,4 +8,5 @@ public interface IRepository {
     public EventDAO FindEventById(string uid);
     public bool AddEvent(EventDTO e);
     public bool UpdateEvent(string oldEventUId, EventDTO newEventDto);
+    public bool DeleteEvent(string uid);
 }
