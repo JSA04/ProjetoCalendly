@@ -10,16 +10,30 @@ public class Controller : ControllerBase
     private readonly Service.IService _service = new Service.Service ();
 
     [HttpGet("/ListEvents")]
-    public List<EventDTO> ListEvents() => _service.ListEvents();
+    public IActionResult ListEvents() =>
+        Ok(_service.ListEvents());
 
     [HttpGet("/FindEventById")]
-    public EventDTO FindEventById(string uid) => _service.FindEventById(uid);
+    public IActionResult FindEventById(string uid)
+    {
+        EventDTO? eventDto = _service.FindEventById(uid);
+        if (eventDto is null)
+        {
+            return NotFound("Não foi encontrado evento com esse UId.");
+        }
+
+        return Ok(eventDto);
+    }
 
     [HttpPost("/AddEvent")]
-    public string AddEvent(string eventName, int eventDuration, string eventLocation, string eventDescription)
-        => _service.AddEvent(eventName, eventDuration, eventLocation, eventDescription);
+    public IActionResult AddEvent(string eventName, int eventDuration, string eventLocation, string eventDescription)
+        => Ok(_service.AddEvent(eventName, eventDuration, eventLocation, eventDescription));
 
     [HttpPut("/UpdateEvent")]
-    public string UpdateEvent(string uIdEvent, [FromBody] EventDTOPut newEventDto)
-        => _service.UpdateEvent(uIdEvent, newEventDto);
+    public IActionResult UpdateEvent(string uIdEvent, [FromBody] EventDTOPut newEventDto)
+        => Ok(_service.UpdateEvent(uIdEvent, newEventDto));
+
+    [HttpDelete("/DeleteEvent")]
+    public IActionResult DeletedEvent(string uIdEvent)
+        => Ok(_service.DeleteEvent(uIdEvent));
 }

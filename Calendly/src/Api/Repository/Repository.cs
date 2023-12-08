@@ -59,4 +59,29 @@ public class Repository : IRepository {
 
         return true;
     }
+
+    public bool DeleteEvent(string uid)
+    {
+        try
+        {
+            var filter = Builders<EventDAO>.Filter.Eq(ev => ev.UId, uid);
+
+            if (_infrastructure.Find(filter).First() is null)
+            {
+                throw new MongoNotFoundException();
+            }
+
+            _infrastructure.DeleteOne(filter);
+        }
+        catch (MongoNotFoundException)
+        {
+            return false;
+        }
+        catch (Exception exception)
+        {
+            Console.WriteLine(exception.Message);
+            return false;
+        }
+        return true;
+    }
 }

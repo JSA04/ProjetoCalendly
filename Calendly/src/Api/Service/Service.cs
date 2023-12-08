@@ -65,4 +65,12 @@ public class Service : IService
 
         return result?"Atualizado com Sucesso":"Falha na Atualizacao";
     }
+
+    public string DeleteEvent(string eventUId)
+    {
+        bool result = _repository.DeleteEvent(eventUId);
+        
+        return result?"Deletado com Sucesso":"Falha na Deleção";
+    }
+
 }
