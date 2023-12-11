@@ -10,8 +10,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddScoped<IRepository, Repository>();
-builder.Services.AddScoped<IService, Service>();
+builder.Services.AddScoped<IRepo, Repo>();
+builder.Services.AddScoped<IServ, Serv>();
 
 var app = builder.Build();
 
