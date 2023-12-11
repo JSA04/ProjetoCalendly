@@ -4,7 +4,7 @@ using MongoDB.Bson;
 
 namespace Calendly.Api.Domain.DTOs;
 
-public class EventDTO {
+public class EventDto {
     [JsonIgnore]
     public ObjectId Id {get ; set;}
     public string UId {get ; set;}
@@ -18,7 +18,7 @@ public class EventDTO {
     public DateTime EventCreationTime {get ; set;}
     
     
-    public EventDTO (string name, int duration, string location, string description)
+    public EventDto (string name, int duration, string location, string description)
     {
         UId = Guid.NewGuid().ToString();
         EventName = name;
@@ -29,7 +29,7 @@ public class EventDTO {
         EventCreationTime = DateTime.Now;
     }
     
-    public EventDTO (EventDAO eventDao)
+    public EventDto (EventDao eventDao)
     {
         Id = eventDao.Id;
         UId = eventDao.UId;

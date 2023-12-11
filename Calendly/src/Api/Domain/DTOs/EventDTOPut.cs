@@ -3,7 +3,7 @@ using MongoDB.Bson;
 
 namespace Calendly.Api.Domain.DTOs;
 
-public class EventDTOPut {
+public class EventDtoPut {
     [JsonIgnore]
     public ObjectId? Id {get ; set;}
     [JsonIgnore]

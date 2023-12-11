@@ -4,43 +4,39 @@ using Calendly.Api.Repository;
 
 namespace Calendly.Api.Service;
 
-public class Service : IService
+public class Serv : IServ
 {
-    private readonly IRepository _repository;
-
-    public Service () => _repository = new Repository.Repository();
+    private readonly IRepo _repository = new Repo();
     
-    public List<EventDTO> ListEvents ()
+    public List<EventDto> ListEvents ()
     {
-        List<EventDAO> eventsDaos = _repository.ListEvents();
-        List<EventDTO> events = new ();
-
-        foreach (var eventDao in eventsDaos)
-        {
-            events.Add(new EventDTO(eventDao));
-        }
-
+        List<EventDto> events = new ();
+        
+        _repository.ListEvents().ForEach(
+            eventDao => events.Add(new EventDto(eventDao))
+        );
+        
         return events;
     }
 
-    public EventDTO FindEventById(string uid)
+    public EventDto FindEventById(string uid)
     {
-        EventDTO eventDto = new EventDTO(_repository.FindEventById(uid));
+        EventDto eventDto = new EventDto(_repository.FindEventById(uid));
 
         return eventDto;
     }
 
     public string AddEvent(string eventName, int eventDuration, string eventLocation, string eventDescription)
     {
-        EventDTO newEvent = new EventDTO(eventName, eventDuration, eventLocation, eventDescription);
+        EventDto newEvent = new EventDto(eventName, eventDuration, eventLocation, eventDescription);
         bool result = _repository.AddEvent(newEvent);
         
         return result?"Criado com Sucesso":"Falha na Criação";
     }
 
-    public string UpdateEvent(string eventUId, EventDTOPut newEventDto)
+    public string UpdateEvent(string eventUId, EventDtoPut newEventDto)
     {
-        EventDTO eventToUpdateDto = FindEventById(eventUId);
+        EventDto eventToUpdateDto = FindEventById(eventUId);
 
         // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
         if (eventToUpdateDto is null)

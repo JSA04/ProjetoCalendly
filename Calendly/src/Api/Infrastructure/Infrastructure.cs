@@ -3,11 +3,11 @@ using MongoDB.Driver;
 
 namespace Calendly.Api.Infrastructure;
 
-public sealed class Infrastructure {
+public sealed class Infra {
     
-    private static IMongoCollection<EventDAO>? _infrastructure;
+    private static IMongoCollection<EventDao>? _infrastructure;
     
-    public static IMongoCollection<EventDAO> GetInfrastructure ()
+    public static IMongoCollection<EventDao> GetInfrastructure ()
     {
         if (_infrastructure is null)
         {
@@ -18,7 +18,7 @@ public sealed class Infrastructure {
 
             IMongoClient client = new MongoClient(mongoUri);
             IMongoDatabase db = client.GetDatabase(mongoDb);
-            _infrastructure = db.GetCollection<EventDAO>(name: mongoCollection);
+            _infrastructure = db.GetCollection<EventDao>(name: mongoCollection);
         }
         
         return _infrastructure;

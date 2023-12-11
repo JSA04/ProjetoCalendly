@@ -1247,11 +1247,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/f72823/Calendly/Calendly/Calendly.csproj",
+      "projectUniqueName": "/home/f72823/ProjetoCalendly/Calendly/Calendly.csproj",
       "projectName": "Calendly",
-      "projectPath": "/home/f72823/Calendly/Calendly/Calendly.csproj",
+      "projectPath": "/home/f72823/ProjetoCalendly/Calendly/Calendly.csproj",
       "packagesPath": "/home/f72823/.nuget/packages/",
-      "outputPath": "/home/f72823/Calendly/Calendly/obj/",
+      "outputPath": "/home/f72823/ProjetoCalendly/Calendly/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/home/f72823/.nuget/NuGet/NuGet.Config"

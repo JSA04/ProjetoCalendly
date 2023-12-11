@@ -1,4 +1,5 @@
 using Calendly.Api.Domain.DTOs;
+using Calendly.Api.Service;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Calendly.Api.Controller;
@@ -7,7 +8,7 @@ namespace Calendly.Api.Controller;
 [Route("/[controller]")]
 public class Controller : ControllerBase
 {
-    private readonly Service.IService _service = new Service.Service ();
+    private readonly IServ _service = new Serv();
 
     [HttpGet("/ListEvents")]
     public IActionResult ListEvents() =>
@@ -16,7 +17,7 @@ public class Controller : ControllerBase
     [HttpGet("/FindEventById")]
     public IActionResult FindEventById(string uid)
     {
-        EventDTO? eventDto = _service.FindEventById(uid);
+        EventDto? eventDto = _service.FindEventById(uid);
         if (eventDto is null)
         {
             return NotFound("Não foi encontrado evento com esse UId.");
@@ -30,7 +31,7 @@ public class Controller : ControllerBase
         => Ok(_service.AddEvent(eventName, eventDuration, eventLocation, eventDescription));
 
     [HttpPut("/UpdateEvent")]
-    public IActionResult UpdateEvent(string uIdEvent, [FromBody] EventDTOPut newEventDto)
+    public IActionResult UpdateEvent(string uIdEvent, [FromBody] EventDtoPut newEventDto)
         => Ok(_service.UpdateEvent(uIdEvent, newEventDto));
 
     [HttpDelete("/DeleteEvent")]

@@ -1,36 +1,33 @@
 using Calendly.Api.Domain.DAOs;
 using Calendly.Api.Domain.DTOs;
+using Calendly.Api.Infrastructure;
 using MongoDB.Driver;
 
 namespace Calendly.Api.Repository;
 
-public class Repository : IRepository {
-    private readonly IMongoCollection<EventDAO> _infrastructure;
-    
-    public Repository ()
-    {
-        _infrastructure = Infrastructure.Infrastructure.GetInfrastructure();
-    }
+public class Repo : IRepo {
+    private readonly IMongoCollection<EventDao> _infrastructure
+        = Infra.GetInfrastructure();
 
-    public List<EventDAO> ListEvents ()
+    public List<EventDao> ListEvents ()
     {
-        var filter = Builders<EventDAO>.Filter.Empty;
+        var filter = Builders<EventDao>.Filter.Empty;
         return _infrastructure.Find(filter).ToList();
     }
 
-    public EventDAO FindEventById(string uid)
+    public EventDao FindEventById(string uid)
     {
 
-        var filter = Builders<EventDAO>.Filter.Eq(ev => ev.UId, uid);
+        var filter = Builders<EventDao>.Filter.Eq(ev => ev.UId, uid);
         return _infrastructure.Find(filter).First();
 
     }
 
-    public bool AddEvent(EventDTO e)
+    public bool AddEvent(EventDto e)
     {
         try
         {
-            EventDAO eDao = new EventDAO(e);
+            EventDao eDao = new EventDao(e);
             _infrastructure.InsertOne(eDao);
         }
         catch (Exception exception)
@@ -42,13 +39,13 @@ public class Repository : IRepository {
         return true;
     }
 
-    public bool UpdateEvent(string oldEventId, EventDTO newEventDto)
+    public bool UpdateEvent(string oldEventId, EventDto newEventDto)
     {
         try
         {
-            EventDAO newEventDao = new EventDAO(newEventDto);
+            EventDao newEventDao = new EventDao(newEventDto);
 
-            var filter = Builders<EventDAO>.Filter.Eq(ev => ev.UId, oldEventId);
+            var filter = Builders<EventDao>.Filter.Eq(ev => ev.UId, oldEventId);
             _infrastructure.ReplaceOne(filter, newEventDao);
         }
         catch (Exception exception)
@@ -64,7 +61,7 @@ public class Repository : IRepository {
     {
         try
         {
-            var filter = Builders<EventDAO>.Filter.Eq(ev => ev.UId, uid);
+            var filter = Builders<EventDao>.Filter.Eq(ev => ev.UId, uid);
 
             if (_infrastructure.Find(filter).First() is null)
             {

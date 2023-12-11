@@ -3,7 +3,7 @@ using MongoDB.Bson;
 
 namespace Calendly.Api.Domain.DAOs;
 
-public class EventDAO {
+public class EventDao {
     
     public ObjectId Id {get ; set;}
     public string UId {get ; set;}
@@ -14,7 +14,7 @@ public class EventDAO {
     public DateTime EventLastUpdateTime {get ; set;}
     public DateTime EventCreationTime {get ; set;}
     
-    public EventDAO (string name, int duration, string location, string description)
+    public EventDao (string name, int duration, string location, string description)
     {
         Id = ObjectId.GenerateNewId();
         UId = Guid.NewGuid().ToString();
@@ -26,7 +26,7 @@ public class EventDAO {
         EventCreationTime = DateTime.Now;
     }
     
-    public EventDAO (EventDTO eventDto)
+    public EventDao (EventDto eventDto)
     {
         Id = eventDto.Id;
         UId = eventDto.UId;
