@@ -17,21 +17,18 @@ public class Controller : ControllerBase
     [HttpGet("/FindEventById")]
     public IActionResult FindEventById(string uid)
     {
-        EventDto? eventDto = _service.FindEventById(uid);
-        if (eventDto is null)
-        {
-            return NotFound("Não foi encontrado evento com esse UId.");
-        }
+        IEventDto? eventDto = _service.FindEventById(uid);
 
-        return Ok(eventDto);
+        if (eventDto is not null) return Ok(eventDto);
+        return NotFound("Não foi encontrado evento com esse UId.");
     }
 
     [HttpPost("/AddEvent")]
-    public IActionResult AddEvent(string eventName, int eventDuration, string eventLocation, string eventDescription)
-        => Ok(_service.AddEvent(eventName, eventDuration, eventLocation, eventDescription));
+    public IActionResult AddEvent([FromBody] EventPostDto newEventDto)
+        => Ok(_service.AddEvent(newEventDto));
 
     [HttpPut("/UpdateEvent")]
-    public IActionResult UpdateEvent(string uIdEvent, [FromBody] EventDtoPut newEventDto)
+    public IActionResult UpdateEvent(string uIdEvent, [FromBody] EventPutDto newEventDto)
         => Ok(_service.UpdateEvent(uIdEvent, newEventDto));
 
     [HttpDelete("/DeleteEvent")]

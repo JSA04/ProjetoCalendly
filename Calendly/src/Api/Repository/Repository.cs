@@ -15,15 +15,16 @@ public class Repo : IRepo {
         return _infrastructure.Find(filter).ToList();
     }
 
-    public EventDao FindEventById(string uid)
+    public EventDao? FindEventById(string uid)
     {
 
         var filter = Builders<EventDao>.Filter.Eq(ev => ev.UId, uid);
-        return _infrastructure.Find(filter).First();
+        IFindFluent<EventDao, EventDao> eventFound = _infrastructure.Find(filter);
 
+        return eventFound.CountDocuments() > 0 ? eventFound.First() : null;
     }
 
-    public bool AddEvent(EventDto e)
+    public bool AddEvent(IEventDto e)
     {
         try
         {
@@ -39,7 +40,7 @@ public class Repo : IRepo {
         return true;
     }
 
-    public bool UpdateEvent(string oldEventId, EventDto newEventDto)
+    public bool UpdateEvent(string oldEventId, IEventDto newEventDto)
     {
         try
         {
